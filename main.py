@@ -3,16 +3,20 @@ import tkinter as tk
 def calculate():
     try:
         a = int(a_entry.get())
-        b = int(b_entry.get())
+        b_values = list(map(int, b_entry.get().split()))  # 将输入的 b 转换为整数列表
     except ValueError:
         result_label.config(text="请输入有效整数")
         return
     
-    x = a - b
-    y = 2 * b - a
+    results = []
+    for b in b_values:
+        for x in range(1, 13):  # 遍历 x 的可能值
+            for y in range(1, 13):  # 遍历 y 的可能值
+                if x + b == a and 2 * b - a == y:
+                    results.append(f"指定 {b} 星怪兽 -> 需要 2 张 {x} 星超量怪兽，1 张 {y} 星融合怪兽")
     
-    if x > 0 and y > 0 and x < 13 and y < 13:
-        result_label.config(text=f"需要 2 张 {x} 星超量怪兽，1 张 {y} 星融合怪兽")
+    if results:
+        result_label.config(text="\n".join(results))
     else:
         result_label.config(text="无法发动联栗炮")
 
@@ -25,7 +29,7 @@ tk.Label(window, text="双方场上和手牌数量和:").grid(row=0, column=0, p
 a_entry = tk.Entry(window)
 a_entry.grid(row=0, column=1, padx=5, pady=5)
 
-tk.Label(window, text="指定对手场上怪兽星级:").grid(row=1, column=0, padx=5, pady=5)
+tk.Label(window, text="对手场上怪兽星级\n(多只怪兽用空格分隔):").grid(row=1, column=0, padx=5, pady=5)
 b_entry = tk.Entry(window)
 b_entry.grid(row=1, column=1, padx=5, pady=5)
 
